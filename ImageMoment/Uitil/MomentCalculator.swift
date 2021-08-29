@@ -73,7 +73,7 @@ class MomentCalculator {
             // 重心
             centerGravityX = m10 / m00
             centerGravityY = m01 / m00
-            // CIImageは縦横反転しているので元に戻す
+            // CIImageはy軸反転しているので元に戻す
             centerGravityY = imageSize - centerGravityY
         }
         
