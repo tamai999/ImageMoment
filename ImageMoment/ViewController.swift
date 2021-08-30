@@ -23,6 +23,11 @@ class ViewController: UIViewController {
     
     private let inFlightSemaphore = DispatchSemaphore(value: 1)
     
+    private let context = CIContext(options: [
+        .cacheIntermediates : false,
+        .name : "ViewControllerCIContext"
+    ])
+    
     // 二値化閾値
     var binarizeThreshold: Float = Const.initialBinarizeThreshold {
         didSet {
@@ -90,7 +95,6 @@ extension ViewController: ImageCaptureDelegate {
         // 描画用にCGImageに変換しておく
         var cgImage: CGImage?
         if let compositeImage = compositeImage {
-            let context = CIContext()
             cgImage = context.createCGImage(compositeImage, from: compositeImage.extent)
         }
         

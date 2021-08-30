@@ -27,6 +27,7 @@ class MomentCalculator {
     // image size
     let imageSize: Int
     
+    private lazy var context = CIContext(mtlDevice: device)
     var runnable = false
     
     /// Metalの初期化をする
@@ -46,7 +47,6 @@ class MomentCalculator {
         guard runnable else { return nil }
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
-        let context = CIContext(mtlDevice: device)
         context.render(ciimage,
                        to: binarizedTexture,
                        commandBuffer: commandBuffer,
