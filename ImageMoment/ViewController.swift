@@ -102,7 +102,9 @@ extension ViewController: ImageCaptureDelegate {
                 self.glanceView.image = UIImage(cgImage: cgImage)
             }
             // 重心を表示
-            if momentFeature.centerGravityX > 0, momentFeature.centerGravityY > 0 {
+            if let momentFeature = momentFeature,
+               momentFeature.centerGravityX > 0,
+               momentFeature.centerGravityY > 0 {
                 let x = CGFloat(momentFeature.centerGravityX) / CGFloat(self.imageSize) * self.glanceView.bounds.width
                 let y = CGFloat(momentFeature.centerGravityY) / CGFloat(self.imageSize) * self.glanceView.bounds.height
                 self.indicatorView.position =  CGPoint(x: x, y: y)

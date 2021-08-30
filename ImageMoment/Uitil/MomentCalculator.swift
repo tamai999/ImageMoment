@@ -27,6 +27,8 @@ class MomentCalculator {
     // image size
     let imageSize: Int
     
+    var runnable = false
+    
     /// Metalの初期化をする
     /// - Parameters:
     ///   - imageSize: 処理する画像の幅
@@ -40,7 +42,8 @@ class MomentCalculator {
     /// モーメント特徴を計算する
     /// - Parameter ciimage: 処理対象の画像。二値化されていること。
     /// - Returns: 重心（x,y）
-    func perform(ciimage: CIImage) -> Result {
+    func perform(ciimage: CIImage) -> Result? {
+        guard runnable else { return nil }
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let context = CIContext(mtlDevice: device)
@@ -84,9 +87,12 @@ class MomentCalculator {
 
 private extension MomentCalculator { 
     private func setupMetal() {
-        if !device.supportsFamily(.apple7) {
+        if device.supportsFamily(.apple7) {
+            runnable = true
+        } else {
             // SIMD-scoped reduction operations に対応していない機種
-            fatalError("A14以降の機種でお試しください")
+            print("モーメントの計算処理はA14以降の機種でお試しください")
+            return
         }
 
         // モーメント計算コンピュートシェーダー
