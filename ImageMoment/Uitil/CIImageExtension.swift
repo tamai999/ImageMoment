@@ -21,31 +21,31 @@ extension CIImage {
         thresholdFilter.threshold = threshold
         guard let thresholdImage = thresholdFilter.outputImage else { return nil }
         
-        // 収縮・膨張処理（クロージング）
-        let closingErodeFilter = CIFilter.morphologyMinimum()
-        closingErodeFilter.inputImage = thresholdImage
-        closingErodeFilter.radius = Const.morphologyFilterRadius
-        guard let closingErodeImage = closingErodeFilter.outputImage else { return nil }
-
-        let closingDilateFilter = CIFilter.morphologyMaximum()
-        closingDilateFilter.inputImage = closingErodeImage
+        // 膨張・収縮処理（クロージング）
+        let closingDilateFilter = CIFilter.morphologyMinimum()
+        closingDilateFilter.inputImage = thresholdImage
         closingDilateFilter.radius = Const.morphologyFilterRadius
         guard let closingDilateImage = closingDilateFilter.outputImage else { return nil }
+
+        let closingErodeFilter = CIFilter.morphologyMaximum()
+        closingErodeFilter.inputImage = closingDilateImage
+        closingErodeFilter.radius = Const.morphologyFilterRadius
+        guard let closingErodeImage = closingErodeFilter.outputImage else { return nil }
         
-        return closingDilateImage
+        return closingErodeImage
         
-        // 膨張・収縮処理（オープニング）
-//        let openingDilateFilter = CIFilter.morphologyMaximum()
-//        openingDilateFilter.inputImage = closingDilateImage
+        // 収縮・膨張処理（オープニング）
+//        let openingErodeFilter = CIFilter.morphologyMaximum()
+//        openingErodeFilter.inputImage = closingErodeImage
+//        openingErodeFilter.radius = Const.morphologyFilterRadius
+//        guard let openingErodeImage = openingErodeFilter.outputImage else { return nil }
+//
+//        let openingDilateFilter = CIFilter.morphologyMinimum()
+//        openingDilateFilter.inputImage = openingErodeImage
 //        openingDilateFilter.radius = Const.morphologyFilterRadius
 //        guard let openingDilateImage = openingDilateFilter.outputImage else { return nil }
 //
-//        let openingErodeFilter = CIFilter.morphologyMinimum()
-//        openingErodeFilter.inputImage = openingDilateImage
-//        openingErodeFilter.radius = Const.morphologyFilterRadius
-//        guard let openingErodeImage = openingErodeFilter.outputImage else { return nil }
-//        
-//        return openingErodeImage
+//        return openingDilateImage
     }
     
     /// 自身と引数の画像の暗い画素値で画像を合成する。
