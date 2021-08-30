@@ -13,7 +13,7 @@ extension CIImage {
         // グレースケールに変換
         let grayscaleFilter = CIFilter.maximumComponent()
         grayscaleFilter.inputImage = self
-        guard let grayscaleImage = grayscaleFilter.outputImage else { return nil}
+        guard let grayscaleImage = grayscaleFilter.outputImage else { return nil }
 
         // 撮影画像を二値化
         let thresholdFilter = CIFilter.colorThreshold()
@@ -22,12 +22,12 @@ extension CIImage {
         guard let thresholdImage = thresholdFilter.outputImage else { return nil }
         
         // 収縮・膨張処理（クロージング）
-        let closingErodeFilter = CIFilter.morphologyMinimum()   // Erode
+        let closingErodeFilter = CIFilter.morphologyMinimum()
         closingErodeFilter.inputImage = thresholdImage
         closingErodeFilter.radius = Const.morphologyFilterRadius
         guard let closingErodeImage = closingErodeFilter.outputImage else { return nil }
 
-        let closingDilateFilter = CIFilter.morphologyMaximum()   // Dilate
+        let closingDilateFilter = CIFilter.morphologyMaximum()
         closingDilateFilter.inputImage = closingErodeImage
         closingDilateFilter.radius = Const.morphologyFilterRadius
         guard let closingDilateImage = closingDilateFilter.outputImage else { return nil }
@@ -35,12 +35,12 @@ extension CIImage {
         return closingDilateImage
         
         // 膨張・収縮処理（オープニング）
-//        let openingDilateFilter = CIFilter.morphologyMaximum()   // Dilate
+//        let openingDilateFilter = CIFilter.morphologyMaximum()
 //        openingDilateFilter.inputImage = closingDilateImage
 //        openingDilateFilter.radius = Const.morphologyFilterRadius
 //        guard let openingDilateImage = openingDilateFilter.outputImage else { return nil }
 //
-//        let openingErodeFilter = CIFilter.morphologyMinimum()   // Erode
+//        let openingErodeFilter = CIFilter.morphologyMinimum()
 //        openingErodeFilter.inputImage = openingDilateImage
 //        openingErodeFilter.radius = Const.morphologyFilterRadius
 //        guard let openingErodeImage = openingErodeFilter.outputImage else { return nil }
