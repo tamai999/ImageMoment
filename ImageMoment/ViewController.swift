@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var thresholdSlider: UISlider!
     @IBOutlet weak var thresholdLabel: UILabel!
     private weak var indicatorView: IndicatorView!
-    private var previewLayer: AVCaptureVideoPreviewLayer!
     
     // image capture
     lazy var imageCapture = ImageCapture()
